@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+env/
+venv/
+.venv/
+
+# System (Mac)
+.DS_Store
+
+# CatBoost generated folder
+catboost_info/

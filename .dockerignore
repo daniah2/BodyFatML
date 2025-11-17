@@ -1,0 +1,6 @@
+__pycache__
+*.ipynb
+*.csv
+*.xlsx
+*.xls
+catboost_info
