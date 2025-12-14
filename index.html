@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Body Fat Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 40px;
+            direction: rtl;
+        }
+        .container {
+            background: white;
+            padding: 25px;
+            max-width: 500px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 6px 0;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #1e40af;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #eef2ff;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>تجربة نموذج نسبة الدهون</h2>
+
+    <input id="weight" type="number" step="0.1" placeholder="الوزن (كجم)">
+    <input id="height" type="number" step="0.01" placeholder="الطول (متر)">
+    <input id="chest" type="number" step="0.1" placeholder="محيط الصدر (سم)">
+    <input id="abdomen" type="number" step="0.1" placeholder="محيط البطن (سم)">
+    <input id="hip" type="number" step="0.1" placeholder="محيط الورك (سم)">
+    <input id="thigh" type="number" step="0.1" placeholder="محيط الفخذ (سم)">
+    <input id="biceps" type="number" step="0.1" placeholder="محيط العضد (سم)">
+
+    <button onclick="predict()">احسب النتيجة</button>
+
+    <div id="result" class="result" style="display:none;"></div>
+</div>
+
+<script>
+async function predict() {
+    const data = {
+        Weight: parseFloat(document.getElementById("weight").value),
+        Height: parseFloat(document.getElementById("height").value),
+        Chest: parseFloat(document.getElementById("chest").value),
+        Abdomen: parseFloat(document.getElementById("abdomen").value),
+        Hip: parseFloat(document.getElementById("hip").value),
+        Thigh: parseFloat(document.getElementById("thigh").value),
+        Biceps: parseFloat(document.getElementById("biceps").value)
+    };
+
+    const response = await fetch("https://bodyfat-api.onrender.com/predict", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("result").innerHTML = `
+        <strong>نسبة الدهون المتوقعة:</strong> ${result.Predicted_Body_Fat}%<br>
+        <strong>نسبة العضلات التقديرية:</strong> ${result.Estimated_Muscle}%
+    `;
+}
+</script>
+
+</body>
+</html>

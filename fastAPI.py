@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 import pickle
 
 
@@ -11,6 +12,14 @@ with open(MODEL_PATH, "rb") as f:
 
 # FastAPI
 app = FastAPI(title="Body Fat & Muscle Prediction API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class BodyMeasurements(BaseModel):
     Weight: float
